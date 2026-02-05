@@ -334,31 +334,22 @@
     // 4. Play Game (In-site Modal)
 window.openGame = function(url, title) {
     modalTitle.innerText = title;
-    
-    const shell = `
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <style>body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: black; }</style>
-            </head>
-            <body>
-                <script>
-                    // The Ultimate Kill-Switch for "Oops"
-                    (function() {
-                        const originalTop = window.self;
-                        Object.defineProperty(window, 'top', { get: () => originalTop });
-                        Object.defineProperty(window, 'parent', { get: () => originalTop });
-                        
-                        // This prevents the game from physically changing the page to "Oops"
-                        window.onbeforeunload = function() { return false; };
-                    })();
-                <\/script>
-                <iframe src="${url}" style="width:100%; height:100%; border:none;" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
-            </body>
-        </html>
+
+    // The Ghost Shell: Completely disconnects the game from your website
+    const ghostShell = `
+        <body style="margin:0;overflow:hidden;background:#000;">
+            <script>
+                // This kills the 'Oops' function before it even exists
+                window.onbeforeunload = function() { return false; };
+                window.top = window.self;
+                window.parent = window.self;
+            <\/script>
+            <iframe src="${url}" style="width:100vw;height:100vh;border:none;" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
+        </body>
     `;
-    
-    modalFrame.srcdoc = shell;
+
+    // Injecting via 'srcdoc' into the modalFrame
+    modalFrame.srcdoc = ghostShell;
     modal.style.display = 'flex';
 };
     // 5. Close Game
@@ -406,6 +397,7 @@ window.openGame = function(url, title) {
 </script>
 </body>
 </html>
+
 
 
 
