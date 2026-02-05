@@ -333,15 +333,28 @@
 
     // 4. Play Game (In-site Modal)
     window.openGame = function(url, title) {
-        modalTitle.innerText = title;
-      modalFrame.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin allow-popups');
-        modalFrame.src = url;
-        modal.style.display = 'flex';
-        // Request fullscreen for the modal container
-        if (modal.requestFullscreen) {
-            modal.requestFullscreen();
-        }
-    };
+    modalTitle.innerText = title;
+    
+    // This creates a local shell to hide your URL from the game scripts
+    const shell = `
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <style>
+                    body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: black; }
+                    iframe { width: 100%; height: 100%; border: none; }
+                </style>
+            </head>
+            <body>
+                <iframe src="${url}" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
+            </body>
+        </html>
+    `;
+    
+    // Use srcdoc to 'inject' the game into a neutral environment
+    modalFrame.srcdoc = shell;
+    modal.style.display = 'flex';
+};
 
     // 5. Close Game
     window.closeGame = function() {
@@ -388,6 +401,7 @@
 </script>
 </body>
 </html>
+
 
 
 
