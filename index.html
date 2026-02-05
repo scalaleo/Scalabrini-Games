@@ -286,7 +286,7 @@
         // --- CUSTOM URL OVERRIDES ---
         // This is where we insert the real link for Cookie Clicker
         if (name === "Cookie Clicker") {
-            gameUrl = "https://ozh.github.io/cookieclicker/";
+            gameUrl = "https://g8hh.github.io/cookieclicker/";
         }
 
         return {
@@ -332,10 +332,9 @@
     }
 
     // 4. Play Game (In-site Modal)
-    window.openGame = function(url, title) {
+window.openGame = function(url, title) {
     modalTitle.innerText = title;
     
-    // This script 'hijacks' the game's security check and forced it to stay quiet
     const shell = `
         <!DOCTYPE html>
         <html>
@@ -344,11 +343,11 @@
             </head>
             <body>
                 <script>
-                    // THE KILLER: This prevents the game from checking the URL
-                    window.top = window.self;
-                    window.parent = window.self;
+                    // This is the part that kills the "Oops" error
+                    Object.defineProperty(window, 'top', { get: function() { return window.self; } });
+                    Object.defineProperty(window, 'parent', { get: function() { return window.self; } });
                 <\/script>
-                <iframe src="${url}" style="width:100%; height:100%; border:none;"></iframe>
+                <iframe src="${url}" style="width:100%; height:100%; border:none;" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
             </body>
         </html>
     `;
@@ -356,7 +355,6 @@
     modalFrame.srcdoc = shell;
     modal.style.display = 'flex';
 };
-
     // 5. Close Game
     window.closeGame = function() {
         modal.style.display = 'none';
@@ -402,6 +400,7 @@
 </script>
 </body>
 </html>
+
 
 
 
