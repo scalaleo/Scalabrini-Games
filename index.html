@@ -286,7 +286,7 @@
         // --- CUSTOM URL OVERRIDES ---
         // This is where we insert the real link for Cookie Clicker
         if (name === "Cookie Clicker") {
-            gameUrl = "https://ozh.github.io/cookieclicker/";
+            gameUrl = "https://raw.githack.com/3kh0/3kh0-assets/main/cookie-clicker/index.html";
         }
 
         return {
@@ -334,7 +334,7 @@
     // 4. Play Game (In-site Modal)
     window.openGame = function(url, title) {
         modalTitle.innerText = title;
-        modalFrame.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin');
+      modalFrame.setAttribute('sandbox', 'allow-forms allow-scripts allow-same-origin allow-popups');
         modalFrame.src = url;
         modal.style.display = 'flex';
         // Request fullscreen for the modal container
@@ -388,6 +388,7 @@
 </script>
 </body>
 </html>
+
 
 
 
