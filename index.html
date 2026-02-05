@@ -334,7 +334,8 @@
     // 4. Play Game (In-site Modal)
 window.openGame = function(url, title) {
     modalTitle.innerText = title;
-    
+
+    // This version uses a simpler, more aggressive hijack
     const shell = `
         <!DOCTYPE html>
         <html>
@@ -343,9 +344,14 @@ window.openGame = function(url, title) {
             </head>
             <body>
                 <script>
-                    // This is the part that kills the "Oops" error
-                    Object.defineProperty(window, 'top', { get: function() { return window.self; } });
-                    Object.defineProperty(window, 'parent', { get: function() { return window.self; } });
+                    // Brute force bypass
+                    window.top = window.self;
+                    window.parent = window.self;
+                    
+                    // This stops the 'Oops' script from running before the game starts
+                    document.addEventListener('DOMContentLoaded', () => {
+                        window.top = window.self;
+                    });
                 <\/script>
                 <iframe src="${url}" style="width:100%; height:100%; border:none;" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
             </body>
@@ -400,6 +406,7 @@ window.openGame = function(url, title) {
 </script>
 </body>
 </html>
+
 
 
 
